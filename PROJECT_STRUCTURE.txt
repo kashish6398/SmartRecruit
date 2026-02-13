@@ -1,0 +1,49 @@
+smartrecruit/
+├── backend/
+│   ├── config/
+│   │   └── db.js                    # MongoDB connection
+│   ├── middleware/
+│   │   └── auth.js                  # JWT authentication middleware
+│   ├── models/
+│   │   ├── User.js                  # User model (HR/Candidate)
+│   │   ├── Resume.js                # Resume model
+│   │   └── JobDescription.js        # Job description model
+│   ├── routes/
+│   │   ├── auth.js                  # Authentication routes
+│   │   ├── candidate.js             # Candidate routes
+│   │   └── hr.js                    # HR routes
+│   ├── controllers/
+│   │   ├── authController.js        # Auth logic
+│   │   ├── candidateController.js   # Candidate logic
+│   │   └── hrController.js          # HR logic
+│   ├── utils/
+│   │   ├── extractText.js           # PDF text extraction
+│   │   └── emailService.js          # Email sending
+│   ├── uploads/                     # File uploads storage
+│   ├── server.js                    # Express server
+│   ├── package.json
+│   └── .env.example
+├── ai-engine/
+│   ├── ranking_engine.py            # AI ranking script
+│   ├── requirements.txt
+│   └── README.md
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   │   ├── CandidateDashboard.js
+│   │   │   └── HRDashboard.js
+│   │   ├── services/
+│   │   │   └── api.js               # API service
+│   │   ├── App.js
+│   │   ├── App.css
+│   │   └── index.js
+│   ├── package.json
+│   └── .env.example
+├── sample-data/
+│   ├── sample_jd.txt
+│   └── sample_resume.txt
+└── README.md
