@@ -4,9 +4,16 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const path = require('path');
 const fs = require('fs');
+const multer = require('multer');
 
 // Load environment variables
 dotenv.config();
+
+// Check required environment variables
+if (!process.env.MONGODB_URI) {
+  console.error("❌ MONGODB_URI is missing in environment variables");
+  process.exit(1);
+}
 
 // Connect to MongoDB
 connectDB();
@@ -18,9 +25,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS middleware
+// CORS configuration (Production Ready)
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || "*",
   credentials: true
 }));
 
@@ -49,19 +56,14 @@ app.get('/', (req, res) => {
   res.status(200).json({
     success: true,
     message: 'Welcome to SmartRecruit API',
-    version: '1.0.0',
-    endpoints: {
-      auth: '/api/auth',
-      candidate: '/api/candidate',
-      hr: '/api/hr'
-    }
+    version: '1.0.0'
   });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  
+  console.error('❌ Error:', err);
+
   if (err instanceof multer.MulterError) {
     return res.status(400).json({
       success: false,
@@ -72,8 +74,7 @@ app.use((err, req, res, next) => {
 
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? err : {}
+    message: err.message || 'Internal server error'
   });
 });
 
@@ -87,20 +88,21 @@ app.use((req, res) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`
-  ========================================
-  🚀 SmartRecruit Server Running
-  ========================================
-  Environment: ${process.env.NODE_ENV || 'development'}
-  Port: ${PORT}
-  Database: ${process.env.MONGODB_URI}
-  ========================================
-  `);
+========================================
+🚀 SmartRecruit Server Running
+========================================
+Environment: ${process.env.NODE_ENV || 'development'}
+Port: ${PORT}
+Database: Connected
+========================================
+`);
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
+  console.error('❌ Unhandled Rejection:', err);
   process.exit(1);
 });
